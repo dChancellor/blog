@@ -4,6 +4,9 @@
 </script>
 
 <ul>
+	{#if posts.length === 0}
+		<h1>No posts found for this category</h1>
+	{/if}
 	{#each posts as post}
 		<li>
 			<h2>
