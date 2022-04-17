@@ -1,0 +1,29 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Keep private stuff private by copying public blog data to public repo
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: pandoc/latex
+    steps:
+      - uses: actions/checkout@v2
+      - name: Pushes to another repository
+        id: push_directory
+        uses: dChancellor/github-action-push-to-another-repository@devel
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: src/
+          destination-github-username: 'dChancellor'
+          destination-repository-name: 'blog'
+          user-email: me@chancellor.tech
+          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
+          target-branch: main
+          target-directory: src/
