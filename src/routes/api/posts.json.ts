@@ -34,6 +34,11 @@ export const get = async (request): Promise<{ body: Post[] }> => {
 	}
 
 	const sortedPosts = filteredPosts.sort((a, b) => {
+		if (!b.meta.date || !a.meta.date) {
+			if (!b.meta.date) console.log(`ERROR - ${b} post does not have meta data for a date`);
+			if (!a.meta.date) console.log(`ERROR - ${a} post does not have meta data for a date`);
+			return 0;
+		}
 		return new Date(b.meta.date).valueOf() - new Date(a.meta.date).valueOf();
 	});
 
@@ -42,9 +47,10 @@ export const get = async (request): Promise<{ body: Post[] }> => {
 	};
 };
 
-const filterAuthorizedPosts = (posts): Post[] => posts.filter(({ path }) => !path.startsWith('/personal'));
+const filterAuthorizedPosts = (posts: Post[]): Post[] => posts.filter(({ path }) => !path.startsWith('/personal'));
 
-const filterPostsByCategory = (posts, category): Post[] => posts.filter(({ path }) => path.startsWith(`/${category}`));
+const filterPostsByCategory = (posts: Post[], category: string): Post[] =>
+	posts.filter(({ path }) => path.startsWith(`/${category}`));
 
 // TODO - Finish this
-const filterPostsByTag = (posts, tags): Post[] => posts;
+const filterPostsByTag = (posts: Post[], tags: string[]): Post[] => posts;

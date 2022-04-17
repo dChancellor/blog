@@ -18,6 +18,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Chancellor's Musings - {title}</title>
+</svelte:head>
+
 <h1>{title}</h1>
 <p>Published: {date}</p>
 

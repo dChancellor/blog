@@ -16,4 +16,8 @@
 	export let posts: Post[];
 </script>
 
+<svelte:head>
+	<title>Chancellor's Musings</title>
+</svelte:head>
+
 <Posts {posts} />
