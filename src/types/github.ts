@@ -7,3 +7,11 @@ export interface AuthResponse {
 export interface GitHubUser {
 	login: string;
 }
+
+export interface GithubOAuth {
+	authUrl: string;
+	tokenUrl: string;
+	userUrl: string;
+	clientID: string;
+	secret: string;
+}

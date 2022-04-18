@@ -1,18 +1,25 @@
 <script context="module">
 	import Posts from '$pages/Pages.svelte';
-	const categories = ['dnd', 'personal', 'technology', 'maker'];
-	const redirect = {
-		status: 302,
-		redirect: '/',
-	};
+	import { generateFetchRoute } from '$helpers/helpers';
+	import { categories, protectedRoutes, siteTitle } from '$dictionary/config';
+
 	export const load = async ({ params, fetch, session }) => {
-		const currentCategory = params.category;
-		if (!categories.includes(currentCategory)) return redirect;
-		if (!session?.user && currentCategory === 'personal') return redirect;
-		const response = await fetch(`/api/posts.json?category=${currentCategory}`);
-		const posts = await response.json();
+		const options = {
+			category: params.category,
+		};
+		const userNotAuthorized = !session.user && protectedRoutes.includes(options.category);
+		if (!categories.includes(options.category) || userNotAuthorized)
+			return {
+				status: 404,
+				error: `Sorry, the category "${options.category}" was not found.`,
+			};
+		const url = generateFetchRoute('/api/posts.json?', options);
+		const response = await fetch(url);
+		const { posts = [] } = await response.json();
 		return {
+			status: response.status,
 			props: {
+				currentCategory: params.category,
 				posts,
 			},
 		};
@@ -21,8 +28,12 @@
 
 <script lang="ts">
 	import type { Post } from '$types/post';
-	export let posts: Post[] | [] = [];
+	export let posts: Post[] | [];
+	export let currentCategory: string;
 </script>
 
+<svelte:head>
+	<title>{siteTitle} - {currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1)}</title>
+</svelte:head>
+
 <Posts {posts} />
-<slot />

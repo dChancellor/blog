@@ -3,6 +3,7 @@
 	import '$styles/synthwave84.css';
 	import '$styles/markdown.css';
 	import { onMount } from 'svelte';
+	import { siteTitle } from '$dictionary/config';
 
 	export let title = 'Untitled';
 	export let date = 'Unknown Date';
@@ -19,7 +20,7 @@
 </script>
 
 <svelte:head>
-	<title>Chancellor's Musings - {title}</title>
+	<title>{siteTitle} - {title}</title>
 </svelte:head>
 
 <h1>{title}</h1>

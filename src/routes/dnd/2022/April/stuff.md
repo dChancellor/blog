@@ -1,5 +1,8 @@
 ---
 date: '2021-12-14'
+coverImage: 'images/test-cover.jpg'
+coverWidth: 16
+coverHeight: 9
 ---
 
 ## Hello, I am a UNTITLED d&d post

@@ -1,11 +1,12 @@
 <script context="module" lang="ts">
 	import type { Post } from '$types/post';
 	export const load = async ({ fetch }) => {
-		const posts = await fetch(`/api/posts.json?`);
-		const allPosts: Post[] = await posts.json();
+		const response = await fetch(`/api/posts.json`);
+		const { posts = [] } = await response.json();
 		return {
+			status: response.status,
 			props: {
-				posts: allPosts,
+				posts,
 			},
 		};
 	};
@@ -13,7 +14,7 @@
 
 <script lang="ts">
 	import Posts from '$pages/Pages.svelte';
-	export let posts: Post[];
+	export let posts: Post[] | [];
 </script>
 
 <svelte:head>

@@ -1,3 +1,4 @@
+import type { CustomRequestHandler } from '$types/api';
 import cookie from 'cookie';
 
 export async function handle({ event, resolve }) {
@@ -8,8 +9,8 @@ export async function handle({ event, resolve }) {
 	return response;
 }
 
-export async function getSession(request) {
+export async function getSession(request: CustomRequestHandler) {
 	return {
-		user: request.locals.user
+		user: request.locals.user,
 	};
 }

@@ -2,13 +2,10 @@
 	import '$styles/global.css';
 
 	export const load = async ({ url, session }) => {
-		if (url.pathname.startsWith('/personal') && session.user != import.meta.env.VITE_USER) {
-			return { redirect: '/', status: 302 };
-		}
 		return {
 			props: {
-				user: session.user,
-				url: url.pathname,
+				username: session.user,
+				path: url.pathname,
 			},
 		};
 	};
@@ -16,19 +13,42 @@
 
 <script lang="ts">
 	import Header from '$components/Header.svelte';
+	import { user, currentPage } from '../store/store';
 	import { fade } from 'svelte/transition';
-	export let user: string;
-	export let url: string;
+	import { prefetch } from '$app/navigation';
+	import { categories } from '$dictionary/config';
+	import { onMount } from 'svelte';
+	import Footer from '$components/Footer.svelte';
+
+	export let username: string;
+	export let path: string;
+
+	$: currentPage.set(path);
+	$: user.set(username);
+
+	const transitionIn = { delay: 100, duration: 100 };
+	const transitionOut = { duration: 75 };
+
+	onMount(() => {
+		categories.forEach((category: string) => prefetch(`/${category}`));
+	});
 </script>
 
-<main>
-	<Header {user} />
-	{#key url}
-		<div in:fade={{ duration: 150, delay: 150 }} out:fade={{ duration: 150 }}>
-			<slot />
-		</div>
+<div class="page">
+	<Header />
+	{#key path}
+		<main tabindex="-1">
+			<div in:fade={transitionIn} out:fade={transitionOut}>
+				<slot />
+			</div>
+		</main>
 	{/key}
-</main>
+	<Footer />
+</div>
 
 <style>
+	.page {
+		min-height: 100vh;
+		max-width: 100vw;
+	}
 </style>

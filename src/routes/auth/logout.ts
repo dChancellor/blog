@@ -1,6 +1,7 @@
+import type { CustomRequestHandler } from '$types/api';
 import type { RequestHandlerOutput } from '@sveltejs/kit';
 
-export async function get(req): Promise<RequestHandlerOutput> {
+export async function get(req: CustomRequestHandler): Promise<RequestHandlerOutput> {
 	req.locals.user = null;
 	return {
 		status: 302,

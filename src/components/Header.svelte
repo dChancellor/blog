@@ -1,10 +1,10 @@
 <script lang="ts">
-	export let user: string;
+	import { user } from '../store/store';
 </script>
 
-<div class="header">
-	{#if user}
-		<h2>Welcome {user}</h2>
+<header>
+	{#if $user}
+		<h2>Welcome {$user}</h2>
 		<form action="/auth/logout">
 			<button>Logout</button>
 		</form>
@@ -13,10 +13,10 @@
 			<button>Login using Github</button>
 		</form>
 	{/if}
-</div>
+</header>
 
 <style>
-	.header {
+	header {
 		width: 100%;
 		height: 50px;
 		background-color: grey;

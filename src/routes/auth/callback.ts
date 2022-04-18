@@ -1,15 +1,12 @@
 import type { AuthResponse, GitHubUser } from '$types/github';
+import { authorizedUsers, githubAuth } from '../../dictionary/config';
 import fetch from 'node-fetch';
-const tokenURL = 'https://github.com/login/oauth/access_token';
-const userURL = 'https://api.github.com/user';
-
-const clientId = import.meta.env.VITE_CLIENT_ID;
-const secret = import.meta.env.VITE_CLIENT_SECRET;
 
 export async function get({ locals, url }) {
 	const githubCode = url.searchParams.get('code');
 	const accessToken = await getAccessToken(githubCode);
 	const user = await getUser(accessToken);
+	if (!authorizedUsers.includes(user)) return { status: 302, headers: { location: '/' } };
 	locals.user = user;
 	return {
 		status: 302,
@@ -20,13 +17,13 @@ export async function get({ locals, url }) {
 	};
 }
 
-async function getAccessToken(githubCode): Promise<string | null> {
-	const response = await fetch(tokenURL, {
+async function getAccessToken(githubCode: string): Promise<string | null> {
+	const response = await fetch(githubAuth.tokenUrl, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 		body: JSON.stringify({
-			client_id: clientId,
-			client_secret: secret,
+			client_id: githubAuth.clientID,
+			client_secret: githubAuth.secret,
 			code: githubCode,
 		}),
 	});
@@ -39,8 +36,8 @@ async function getAccessToken(githubCode): Promise<string | null> {
 		});
 }
 
-async function getUser(accessToken): Promise<string | null> {
-	const response = await fetch(userURL, {
+async function getUser(accessToken: string): Promise<string | null> {
+	const response = await fetch(githubAuth.userUrl, {
 		headers: {
 			Accept: 'application/json',
 			Authorization: `Bearer ${accessToken}`,
