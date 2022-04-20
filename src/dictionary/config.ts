@@ -13,3 +13,5 @@ export const githubAuth: GithubOAuth = {
 export const siteTitle = "Chancellor's Musings";
 export const siteLink = 'https://github.com/dChancellor/blog';
 export const siteAuthor = 'Derek Chancellor';
+
+export const postsPerPage = 1;

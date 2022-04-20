@@ -17,6 +17,7 @@ export interface PostsAPIResponse {
 
 interface PostsBodyResponse {
 	posts?: Post[];
+	totalNumberOfPosts?: number;
 	error?: string;
 }
 

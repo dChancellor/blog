@@ -9,6 +9,6 @@
 <style>
 	footer {
 		bottom: 0%;
-		position: absolute;
+		position: sticky;
 	}
 </style>

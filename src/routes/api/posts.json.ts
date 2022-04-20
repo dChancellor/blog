@@ -18,14 +18,17 @@ export const get = async (request: CustomRequestHandler): Promise<PostsAPIRespon
 		const authorizedPosts = request.locals.user ? allPosts : filterProtectedPostsOut(allPosts);
 		const sortedPosts = sortPosts(authorizedPosts);
 
-		const { posts: filteredPosts, offset } = applySearchParams(sortedPosts, request.url.searchParams);
+		const { posts: filteredPosts, offset, postsPerPage } = applySearchParams(sortedPosts, request.url.searchParams);
 
-		const offSetPosts = filteredPosts.slice(offset);
+		const totalNumberOfPosts = filteredPosts.length;
+
+		const offSetPosts = filteredPosts.slice(offset, offset + postsPerPage);
 
 		return {
 			status: 200,
 			body: {
 				posts: offSetPosts,
+				totalNumberOfPosts: totalNumberOfPosts,
 			},
 		};
 	} catch (error) {
@@ -76,23 +79,30 @@ const sortPosts = (posts: Post[]): Post[] => {
 	});
 };
 
-const applySearchParams = (posts: Post[], searchParams: URLSearchParams): { posts: Post[]; offset: number } => {
+const applySearchParams = (
+	posts: Post[],
+	searchParams: URLSearchParams,
+): { posts: Post[]; offset: number; postsPerPage: number } => {
 	let filteredPosts = posts;
 	let offset = 0;
+	const postsPerPage = parseInt(searchParams.get('postsPerPage')) || 10;
 	for (const [key, value] of searchParams) {
 		switch (key) {
-			case 'category':
+			case 'category': {
 				filteredPosts = filterPostsByCategory(filteredPosts, value);
 				break;
-			case 'offset':
-				offset = parseInt(value);
+			}
+			case 'page': {
+				offset = parseInt(value) * postsPerPage - postsPerPage;
 				break;
-			case 'date-range':
+			}
+			case 'date-range': {
 				filteredPosts = filterPostsByDate(filteredPosts, value);
 				break;
+			}
 			default:
 				break;
 		}
 	}
-	return { posts: filteredPosts, offset };
+	return { posts: filteredPosts, offset, postsPerPage };
 };

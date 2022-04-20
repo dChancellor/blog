@@ -3,7 +3,7 @@ export interface Post {
 	path: string;
 	slug: string;
 	fileName: string;
-	default?: any;
+	default?: ProxyConstructor;
 }
 
 export interface Metadata {
