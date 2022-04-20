@@ -1,4 +1,10 @@
-<footer>This is a footer</footer>
+<script>
+	import { siteAuthor } from '$dictionary/config';
+</script>
+
+<footer>
+	<p>&copy;{new Date().getFullYear()} {siteAuthor}</p>
+</footer>
 
 <style>
 	footer {

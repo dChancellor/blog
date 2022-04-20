@@ -1,7 +1,6 @@
 <script context="module" lang="ts">
-	import type { Post } from '$types/post';
-	export const load = async ({ fetch }) => {
-		const response = await fetch(`/api/posts.json`);
+	export const load = async ({ url, fetch }) => {
+		const response = await fetch(`/api/posts.json${url.search}`);
 		const { posts = [] } = await response.json();
 		return {
 			status: response.status,
@@ -13,7 +12,8 @@
 </script>
 
 <script lang="ts">
-	import Posts from '$pages/Pages.svelte';
+	import type { Post } from '$types/post';
+	import Posts from '$pages/Posts.svelte';
 	export let posts: Post[] | [];
 </script>
 

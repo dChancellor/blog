@@ -1,13 +1,19 @@
 export interface Post {
-	meta: Meta;
+	metadata: Metadata;
 	path: string;
 	slug: string;
+	fileName: string;
+	default?: any;
 }
 
-export interface Meta {
+export interface Metadata {
 	title: string;
 	date: string;
-	coverImage: string;
-	coverWidth: number;
-	coverHeight: number;
+	updated?: string;
+	categories: string[];
+	coverImage?: string;
+	coverWidth?: number;
+	coverHeight?: number;
+	excerpt: string;
+	secret: boolean;
 }

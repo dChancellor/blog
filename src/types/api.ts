@@ -1,4 +1,4 @@
-import type { RequestEvent } from '@sveltejs/kit/types/private';
+import type { RequestEvent } from '../../node_modules/@sveltejs/kit/types/internal';
 import type { Post } from './post';
 
 export interface CustomRequestHandler extends RequestEvent {

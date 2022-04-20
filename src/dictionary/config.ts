@@ -1,8 +1,5 @@
 import type { GithubOAuth } from '../types/github';
 
-export const categories: string[] = import.meta.env.VITE_CATEGORIES.split('&');
-export const protectedRoutes: string[] = import.meta.env.VITE_PROTECTED_ROUTES.split('&');
-
 export const authorizedUsers: string[] = import.meta.env.VITE_USERS.split('&');
 
 export const githubAuth: GithubOAuth = {

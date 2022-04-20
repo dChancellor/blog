@@ -11,18 +11,18 @@
 		<li>
 			<article>
 				<img
-					src={post.meta.coverImage}
+					src={`/images/${post.path}/${post.metadata.coverImage}`}
 					alt=""
-					width={post.meta.coverWidth}
-					height={post.meta.coverHeight}
-					style="aspect-ratio: {post.meta.coverWidth} / {post.meta.coverHeight}"
+					width={post.metadata.coverWidth}
+					height={post.metadata.coverHeight}
+					style="aspect-ratio: {post.metadata.coverWidth} / {post.metadata.coverHeight}"
 				/>
 				<h2>
-					<a sveltekit:prefetch href={post.path}>
-						{post.meta.title ? post.meta.title : 'Untitled'}
+					<a sveltekit:prefetch href={`/post/${post.slug}`}>
+						{post.metadata.title ? post.metadata.title : 'Untitled'}
 					</a>
 				</h2>
-				Published {post.meta.date}
+				Published {post.metadata.date}
 			</article>
 		</li>
 	{/each}
