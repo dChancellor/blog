@@ -2,24 +2,22 @@ import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
 import path from 'path';
 import { mdsvex } from 'mdsvex';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://github.com/sveltejs/svelte-preprocess
-	// for more information about preprocessors
 	preprocess: [
 		preprocess(),
 		mdsvex({
 			extensions: ['.md'],
-			layout: {
-				_: 'src/routes/_post.svelte'
-			},
+			rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
 			smartypants: {
 				quotes: true,
 				ellipses: true,
-				dashes: 'oldschool'
-			}
-		})
+				dashes: 'oldschool',
+			},
+		}),
 	],
 	extensions: ['.svelte', '.md'],
 	kit: {
@@ -29,13 +27,15 @@ const config = {
 				alias: {
 					$components: path.resolve('./src/components'),
 					$pages: path.resolve('./src/pages'),
+					$dictionary: path.resolve('./src/dictionary'),
 					$types: path.resolve('./src/types'),
 					$assets: path.resolve('./src/assets'),
-					$styles: path.resolve('./src/styles')
-				}
-			}
-		}
-	}
+					$styles: path.resolve('./src/styles'),
+					$store: path.resolve('./src/store'),
+				},
+			},
+		},
+	},
 };
 
 export default config;

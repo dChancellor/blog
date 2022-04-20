@@ -6,4 +6,5 @@ node_modules
 .env
 .env.*
 !.env.example
-/src/routes/personal
+/src/static/images
+/src/posts
